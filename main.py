@@ -74,6 +74,28 @@ async def profile(interaction: discord.Interaction):
     )
 
 
+@bot.tree.context_menu(name="Get Profile")
+async def get_profile(interaction: discord.Interaction, user: discord.User):
+    user_info = await db.get_info(user.id)
+    if not user_info:
+        await interaction.response.send_message(
+            embed=create_embed(f"This user doesn't have a Leetcode account linked!"),
+            ephemeral=True,
+        )
+        return
+
+    lc_info = {
+        "EASY": user_info["easies"],
+        "MEDIUM": user_info["mediums"],
+        "HARD": user_info["hards"],
+    }
+    await interaction.response.send_message(
+        embed=create_profile_embed(
+            user_info, lc_info, interaction.user.name, interaction.user.avatar
+        )
+    )
+
+
 @bot.tree.command(
     name="sync",
     description="Sync your Leetcode solved questions with Leetcode Civilization.",
@@ -475,7 +497,9 @@ async def cancel(interaction: discord.Interaction):
 @bot.tree.command(name="leaderboard", description="Flex your privilege.")
 @user_command(fetch_lc=False)
 async def leaderboard(interaction: discord.Interaction):
-    leaderboard_data, user_rank, total_users = await db.get_leaderboard(interaction.user.id)
+    leaderboard_data, user_rank, total_users = await db.get_leaderboard(
+        interaction.user.id
+    )
 
     formatted_leaderboard = []
     for row in leaderboard_data:
