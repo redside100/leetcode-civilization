@@ -4,7 +4,7 @@ import random
 from typing import Literal, Union
 from cachetools import TTLCache
 import discord
-from consts import RANKUP_PROGRESSION
+from consts import BATTLE_CANCEL_REQUEST_TIMEOUT, BATTLE_REQUEST_TIMEOUT, BATTLE_TIMEOUT, RANKUP_PROGRESSION, RANKUP_TIMEOUT
 import db
 from discord import app_commands
 from discord.ext import commands
@@ -18,6 +18,7 @@ from util import (
     handle_battle_result,
     has_active_battle_request,
     user_command,
+    wrap_lc_info,
 )
 from views import BattleCancelRequest, BattleRequest
 
@@ -28,10 +29,10 @@ bot = commands.Bot(
     case_insensitive=False,
 )
 link_cache = TTLCache(maxsize=1024, ttl=300)
-rankup_cache = TTLCache(maxsize=1024, ttl=60 * 20)
-battle_request_cache = TTLCache(maxsize=2048, ttl=120)
-battle_cache = TTLCache(maxsize=2048, ttl=60 * 40)
-battle_cancel_cache = TTLCache(maxsize=2048, ttl=60)
+rankup_cache = TTLCache(maxsize=1024, ttl=RANKUP_TIMEOUT)
+battle_request_cache = TTLCache(maxsize=2048, ttl=BATTLE_REQUEST_TIMEOUT)
+battle_cache = TTLCache(maxsize=2048, ttl=BATTLE_TIMEOUT)
+battle_cancel_cache = TTLCache(maxsize=2048, ttl=BATTLE_CANCEL_REQUEST_TIMEOUT)
 
 
 @bot.tree.command(
@@ -62,14 +63,12 @@ async def link(interaction: discord.Interaction, leetcode_username: str):
 async def profile(interaction: discord.Interaction):
     user_info, _ = interaction.data["injected"]
     # used saved LC stats
-    lc_info = {
-        "EASY": user_info["easies"],
-        "MEDIUM": user_info["mediums"],
-        "HARD": user_info["hards"],
-    }
     await interaction.response.send_message(
         embed=create_profile_embed(
-            user_info, lc_info, interaction.user.name, interaction.user.avatar
+            user_info,
+            wrap_lc_info(user_info),
+            interaction.user.name,
+            interaction.user.avatar,
         )
     )
 
@@ -84,14 +83,9 @@ async def get_profile(interaction: discord.Interaction, user: discord.User):
         )
         return
 
-    lc_info = {
-        "EASY": user_info["easies"],
-        "MEDIUM": user_info["mediums"],
-        "HARD": user_info["hards"],
-    }
     await interaction.response.send_message(
         embed=create_profile_embed(
-            user_info, lc_info, user.name, user.avatar
+            user_info, wrap_lc_info(user_info), user.name, user.avatar
         )
     )
 
@@ -307,7 +301,7 @@ async def rankup(interaction: discord.Interaction):
             user_info["tickets"] - RANKUP_PROGRESSION[user_info["rank"]]["ticket_cost"],
         )
         rankup_cache[interaction.user.id] = question_info
-        exp_time = int(time.time() + 60 * 20)
+        exp_time = int(time.time() + RANKUP_TIMEOUT)
         await interaction.followup.send(
             embed=create_embed(
                 f"Used **{RANKUP_PROGRESSION[user_info["rank"]]["ticket_cost"]}** tickets to attempt the rankup challenge!\n\n"
@@ -363,7 +357,7 @@ async def battle(
         )
         return
 
-    exp_time = int(time.time() + 120)
+    exp_time = int(time.time() + BATTLE_REQUEST_TIMEOUT)
     battle_request_cache[(interaction.user.id, target_user.id)] = True
     embed = create_embed(
         title="Battle Request",
@@ -482,7 +476,7 @@ async def cancel(interaction: discord.Interaction):
         return
 
     battle_cancel_cache[(interaction.user.id, opponent_id)] = True
-    exp_time = int(time.time() + 60)
+    exp_time = int(time.time() + BATTLE_CANCEL_REQUEST_TIMEOUT)
     await interaction.response.send_message(
         content=f"<@{opponent_id}>",
         embed=create_embed(

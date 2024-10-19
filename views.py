@@ -1,6 +1,7 @@
 import time
 import discord
 
+from consts import BATTLE_TIMEOUT
 import db
 import lcapi
 from util import create_embed
@@ -105,7 +106,7 @@ class BattleRequest(discord.ui.View):
             problem["difficulty"],
             has_noob,
         )
-        exp_time = int(time.time() + 60 * 40)
+        exp_time = int(time.time() + BATTLE_TIMEOUT)
         await interaction.followup.send(
             f"<@{self.id_a}> <@{self.id_b}>",
             embed=create_embed(

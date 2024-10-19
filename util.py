@@ -165,3 +165,11 @@ async def handle_battle_result(
                 result_msg += f"<@{user_id}> gains **{base_difficulty_tickets[problem_difficulty]}** tickets."
 
     return result_msg
+
+
+def wrap_lc_info(user_info: dict):
+    return {
+        "EASY": user_info["easies"],
+        "MEDIUM": user_info["mediums"],
+        "HARD": user_info["hards"],
+    }
