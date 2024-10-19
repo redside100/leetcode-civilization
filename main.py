@@ -91,7 +91,7 @@ async def get_profile(interaction: discord.Interaction, user: discord.User):
     }
     await interaction.response.send_message(
         embed=create_profile_embed(
-            user_info, lc_info, interaction.user.name, interaction.user.avatar
+            user_info, lc_info, user.name, user.avatar
         )
     )
 
