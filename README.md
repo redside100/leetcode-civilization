@@ -16,7 +16,7 @@ Congratulations! You have joined LeetCode Civilization, you are now ready to get
 ## Tickets
 Tickets are the currency in LeetCode Civilization. You can gain tickets in a few ways:
 - Completing new questions on LeetCode and then using the `/sync` command to update your completed questions
-- Completing the LeetCode daily question by using the `/daily` command after solving the question (you can use `\sync` on this question if you haven't already solved it to double dip on points!)
+- Completing the LeetCode daily question by using the `/daily` command after solving the question (you can use `/sync` on this question if you haven't already solved it to double dip on points!)
 - Competing in LeetCode battles, this will be explained more later!
 
 ## Rank up
@@ -35,13 +35,12 @@ LeetCode battles are started with the `/battle <user> <difficulty>` command. A p
 
 The consequences for winning or losing a LeetCode battle can vary. If a Noob is involved in the battle, then nothing happens at all. This can be considered as just practice. 
 
-Otherwise, if both parties are the same level, then whoever wins the battle rises a rank and whoever loses drops a rank. 
 
-If the parties are of unbalanced rank, the loser still drops a rank but if the winner is of higher rank, then they gain tickets instead of rising a rank. If the lower ranked player wins, they still rise a rank.
+If the parties are of unbalanced rank, the loser still drops a rank but if the winner is of higher or equal rank, then they gain tickets instead of rising a rank. If the lower ranked player wins, they still rise a rank.
 
-If one of the parties is Champion rank, then they gain LP for battle wins.
+If one of the parties is Champion rank, then they gain/lose LP for battle wins/losses.
 
-If both parties agree to call off the battle, one of the parties can use the `/cancel` command to end the battle.
+If both parties agree to call off the battle, one of the parties can use the `/cancel` command to send a request to end the battle.
 
 ## Profile
 You can use the `/profile` command to check your stats. It features how many tickets you have, how many problems you have solved, and your win/loss record for non-Noob battles.
