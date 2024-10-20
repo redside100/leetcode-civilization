@@ -24,7 +24,7 @@ To rank up in LeetCode Civilization you must complete a rank up trial. If you pa
 - Noob --> Pro: Easy
 - Pro --> Master: Medium
 - Master --> Champion: Hard
-- Master --> Master: Hard
+- Master --> Master: Medium/Hard
 
 Once you reach the Master rank, completing the rank up challenge gives you elo points. Rise to the top of the Master rank to claim the title of LeetCode God.
 
