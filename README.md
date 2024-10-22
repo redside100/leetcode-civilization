@@ -21,12 +21,12 @@ Tickets are the currency in LeetCode Civilization. You can gain tickets in a few
 
 ## Rank up
 To rank up in LeetCode Civilization you must complete a rank up trial. If you pass the trial you rank up. The trial is a timed LeetCode problem. You have 25 minutes to complete the trial. The difficulty of the problem depends on the rank you currently possess:
-- Noob --> Pro: Easy
-- Pro --> Master: Medium
-- Master --> Champion: Hard
-- Master --> Master: Medium/Hard
+- Noob --> Pro: Easy (50 tickets)
+- Pro --> Master: Medium (100 tickets)
+- Master --> Champion: Hard (150 tickets)
+- Champion --> Champion (+LP): Medium/Hard (150 tickets)
 
-Once you reach the Master rank, completing the rank up challenge gives you elo points. Rise to the top of the Master rank to claim the title of LeetCode God.
+Once you reach the Champion rank, completing the rank up challenge gives you LP (Leet Points). Rise to the top of the Champion rank to claim the title of LeetCode God (figuratively).
 
 ## Battles
 An important part of LeetCode Civilization are LeetCode battles. At any time you can challenge someone else to a LeetCode battle. The aggressor decides the difficulty of the problem. If the person challenged chooses to accept the battle, both parties are given the same random question of the chosen difficulty and whoever solves it first wins the battle.
